@@ -42,25 +42,26 @@ for pp in purpose:
     doc_vecs.append(model.infer_vector(pp))
 
 
-# In[7]:
+# In[1]:
 
 while True:
     line = input("> ")
     if not line:
         break
 
-    vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
-    sims = cosine_similarity([vec], doc_vecs)
+#     vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
+#     sims = cosine_similarity([vec], doc_vecs)
+    sims = model.n_similarity([mecab.parse(line)], purpose)
     index = np.argsort(sims[0])
 
-    print(purpose[index[-1]])
+    print(purpose[index[-1]], sims[index[-1]])
 #     print()
 #     print(answers[index[-1]])
 #     print()
 
-    print(purpose[index[-2]])
-    print(purpose[index[-3]])
-    print(purpose[index[-4]])
+    print(purpose[index[-2]], sims[index[-2]])
+    print(purpose[index[-3]], sims[index[-3]])
+    print(purpose[index[-4]], sims[index[-4]])
     print()
 
 
