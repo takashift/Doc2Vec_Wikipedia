@@ -49,19 +49,27 @@ while True:
     if not line:
         break
 
-#     vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
-#     sims = cosine_similarity([vec], doc_vecs)
-    sims = model.n_similarity([mecab.parse(line)], purpose)
+    # 学習データに無い文章のベクトルを推定
+    vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
+    # コサイン類似度を算出
+    sims = cosine_similarity([vec], doc_vecs)
+    # 配列を並び替えて、配列のインデックスを返す。
     index = np.argsort(sims[0])
+    
+#     sims = []
+#     for pp in purpose_d2v:
+#         sims.append(model.similarity(line, pp))
+#     sims = model.n_similarity([gensim.utils.simple_preprocess(mecab.parse(line).strip(), min_len=1)], purpose)
+#     index = np.argsort(sims)
 
-    print(purpose[index[-1]], sims[index[-1]])
+    print(purpose[index[-1]], sims[0][index[-1]])
 #     print()
 #     print(answers[index[-1]])
 #     print()
 
-    print(purpose[index[-2]], sims[index[-2]])
-    print(purpose[index[-3]], sims[index[-3]])
-    print(purpose[index[-4]], sims[index[-4]])
+    print(purpose[index[-2]], sims[0][index[-2]])
+    print(purpose[index[-3]], sims[0][index[-3]])
+    print(purpose[index[-4]], sims[0][index[-4]])
     print()
 
 
