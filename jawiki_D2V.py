@@ -3,14 +3,12 @@
 
 # In[1]:
 
-
 import gensim
 import smart_open
 import argparse
 
 
-# In[ ]:
-
+# In[2]:
 
 parser = argparse.ArgumentParser()
 parser.add_argument('input', type=str)
@@ -22,7 +20,6 @@ class args:
 
 # In[ ]:
 
-
 def read_corpus(fname):
     with smart_open.smart_open(fname, encoding="utf-8") as f:
         for i, line in enumerate(f):
@@ -32,13 +29,24 @@ def read_corpus(fname):
 
 # In[ ]:
 
-
 train_corpus = list(read_corpus(args.input))
 
+'''
+size: ベクトル化した際の次元数
+alpha: 学習率
+sample: 単語を無視する際の頻度の閾値
+min_count: 学習に使う単語の最低出現回数
+workers: 学習時のスレッド数
+'''
 model = gensim.models.doc2vec.Doc2Vec(size=400, min_count=10, iter=55)
 
 model.build_vocab(train_corpus)
 model.train(train_corpus, total_examples=model.corpus_count, epochs=model.iter)
 
 model.save(args.save_model)
+
+
+# In[ ]:
+
+
 
